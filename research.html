@@ -99,7 +99,7 @@
 
 <header class="site-header">
   <div class="nav-wrap">
-    <a href="index.html" class="brand">AI Signal Design <small>Companion to Poulidis (INSEAD)</small></a>
+    <a href="index.html" class="brand">AI Signal Design</a>
     <nav class="primary">
       <a href="index.html">Home</a>
       <a href="simulator.html">Simulator</a>
@@ -116,9 +116,6 @@
 <section class="hero" style="padding-bottom: 0;">
   <span class="eyebrow">The paper</span>
   <h1 style="font-size:clamp(1.8rem,3vw,2.4rem);">For researchers and readers of the paper</h1>
-  <p class="lede">
-    This page is the anchor: full bibliographic detail, abstract, citation, and a direct link to the manuscript.
-  </p>
 </section>
 
 <section>
@@ -142,16 +139,7 @@
 <div class="abstract-label">Abstract</div>
 <div class="abstract-box">
   <p>
-    Human-in-the-loop AI systems often decide not only whether to signal a decision-maker, but how much assistance to provide over time. More frequent or more prescriptive signals — e.g., solutions rather than hints — can substantially improve current decisions but can also increase alert fatigue and reduce cognitive effort, eroding future performance and skill retention.
-  </p>
-  <p>
-    We study a constrained signal-policy design problem (SPD) in a finite-horizon Markov decision process in which a planner chooses signal intensity for a human operator. We show that reduced-form transition kernels are structurally insufficient for signal design because they do not identify whether downstream consequences arise from action-mediated displacement or from changes in future <em>efficacy</em> — the system's state-dependent capacity to improve subsequent decisions, conditional on the realized action. To recover these design-relevant components, we introduce a factored-kernel representation that separates behavioral response, physical transitions, and <em>efficacy drift</em>.
-  </p>
-  <p>
-    This structure yields a clear design logic for dynamic signal design: use direct SPD under full specification, and use a structured relative-design (RD) when the planner can evaluate marginal signal upgrades without fully specifying downstream costs across states; under RD, stronger signals are used when their incremental benefit justifies their downstream cost. We formalize this principle by exactly characterizing the optimal penalized ordered-menu policy through a single shadow price.
-  </p>
-  <p>
-    Computational studies in healthcare and engineering reveal a three-regime pattern: when efficacy drift is low, myopic rules based on immediate rewards are nearly optimal; when drift is material and the model is correctly specified, RD retains nearly all of SPD's value; under misspecification, RD can improve realized performance by regularizing the design problem. Our framework provides a disciplined basis for the design and governance of AI signal policies.
+    Human-in-the-loop AI systems often decide not only whether to signal a decision-maker, but how much assistance to provide over time. More frequent or more prescriptive signals — e.g., solutions rather than hints — can substantially improve current decisions but can also increase alert fatigue and reduce cognitive effort, eroding future performance and skill retention. We study a constrained signal-policy design problem (SPD) in a finite-horizon Markov decision process in which a planner chooses signal intensity for a human operator. We show that reduced-form transition kernels are structurally insufficient for signal design because they do not identify whether downstream consequences arise from action-mediated displacement or from changes in future <em>efficacy</em> — the system's state-dependent capacity to improve subsequent decisions, conditional on the realized action. To recover these design-relevant components, we introduce a factored-kernel representation that separates behavioral response, physical transitions, and <em>efficacy drift</em>. This structure yields a clear design logic for dynamic signal design: use direct SPD under full specification, and use a structured relative-design (RD) when the planner can evaluate marginal signal upgrades without fully specifying downstream costs across states; under RD, stronger signals are used when their incremental benefit justifies their downstream cost. We formalize this principle by exactly characterizing the optimal penalized ordered-menu policy through a single shadow price. Computational studies in healthcare and engineering reveal a three-regime pattern: when efficacy drift is low, myopic rules based on immediate rewards are nearly optimal; when drift is material and the model is correctly specified, RD retains nearly all of SPD's value; under misspecification, RD can improve realized performance by regularizing the design problem. Our framework provides a disciplined basis for the design and governance of AI signal policies.
   </p>
 </div>
 
@@ -197,33 +185,6 @@
     </p>
     <p>
       This companion website is an independent translation of the paper's findings for students and practitioners. It is not a substitute for the full manuscript; formal statements, proofs, and calibration details live there.
-    </p>
-  </div>
-</section>
-
-<section>
-  <h2>Related reading referenced in the paper</h2>
-  <div class="prose">
-    <ul>
-      <li>Li, C. and B. Piri (2025). Alert fatigue and clinical decision support. <em>Working paper.</em> — Hospital-pharmacy drift calibration.</li>
-      <li>Ancker, J. S. et al. (2017). Effects of workload, work complexity, and repeated alerts on alert fatigue. — Ambulatory CDS anchor.</li>
-      <li>Saxena, A. et al. (2008). Damage propagation modeling for aircraft engine run-to-failure simulation (C-MAPSS). — Turbofan benchmark.</li>
-      <li>Altman, E. (1999). <em>Constrained Markov Decision Processes.</em> — Occupancy-measure LP methodology.</li>
-      <li>Agarwal, R., M. Moehring &amp; A. Wolitzky (2025). Selective automation and information disclosure. — Related disclosure-design work.</li>
-      <li>Parasuraman, R. and D. Manzey (2010). Complacency and bias in human use of automation. — Efficacy-drift psychology.</li>
-    </ul>
-    <p class="small muted">Full bibliography: see <a href="assets/dynamic-ai-signal-policy-design.pdf" target="_blank" rel="noopener">the PDF</a>.</p>
-  </div>
-</section>
-
-<section>
-  <h2>About this site</h2>
-  <div class="prose">
-    <p>
-      This is a pedagogical companion to the paper, aimed at INSEAD MBA students and practitioners deploying human–AI decision-support systems. All interactive elements (the simulator, the diagnostic wizard) are intentionally small and transparent — the tabular MDP in the simulator is designed for intuition, not research claims.
-    </p>
-    <p>
-      Source code: <a href="https://github.com/StefanosPoulidis/ai-signal-design" target="_blank" rel="noopener">github.com/StefanosPoulidis/ai-signal-design</a>.
     </p>
   </div>
 </section>
