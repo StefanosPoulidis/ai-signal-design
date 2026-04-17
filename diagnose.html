@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Diagnose my setting — AI Signal Design</title>
+<meta name="description" content="A five-question screener that tells you whether myopic signaling, Relative Design (RD), or Signal-Policy Design (SPD) is the right design object for your deployment.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css">
+<style>
+  .verdict-subtitle {
+    font-size: 1.02rem;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin-top: -4px;
+    margin-bottom: 14px;
+  }
+  .verdict-card.tag-spd          { background: #f0e5d4; border-color: var(--accent); }
+  .verdict-card.tag-rd           { background: #e5edf5; border-color: var(--blue); }
+  .verdict-card.tag-safe-harbor  { background: var(--zone-safe); border-color: var(--good); }
+  .verdict-card.tag-short-horizon { background: var(--zone-safe); border-color: var(--good); }
+  .verdict-card.tag-diagnostic-only { background: var(--zone-hot); border-color: var(--bad); }
+  .verdict-reasoning li { margin-bottom: 8px; }
+  details.answer-recap {
+    margin-top: 26px;
+    padding: 14px 18px;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+  }
+  details.answer-recap summary {
+    cursor: pointer;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  details.answer-recap ul { padding-left: 1.2em; margin: 10px 0 0; }
+  details.answer-recap li { font-size: 0.88rem; margin-bottom: 8px; }
+  .wizard-nav button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-wrap">
+    <a href="index.html" class="brand">AI Signal Design <small>Companion to Poulidis (INSEAD)</small></a>
+    <nav class="primary">
+      <a href="index.html">Home</a>
+      <a href="simulator.html">Simulator</a>
+      <a href="diagnose.html" class="active">Diagnose</a>
+      <a href="concepts.html">Concepts</a>
+      <a href="cases.html">Cases</a>
+      <a href="research.html">Research</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<section class="hero" style="padding-bottom:0;">
+  <span class="eyebrow">Diagnostic screener</span>
+  <h1 style="font-size:clamp(1.8rem,3vw,2.4rem);">Which design object fits your setting?</h1>
+  <p class="lede">
+    Five questions, one recommendation. The screener implements the paper's selection rule over design objects — myopic, RD, or SPD — conditioned on what your deployment can credibly identify and what cost object it can credibly defend.
+  </p>
+</section>
+
+<section>
+  <div id="progress-dots" class="progress-dots" style="margin-top: 18px;"></div>
+  <div class="wizard" id="wizard-body">
+    <!-- filled by JS -->
+  </div>
+</section>
+
+<section>
+  <h2>How the screener works</h2>
+  <div class="prose">
+    <p>
+      The screener formalizes the paper's <strong>selection rule over design objects</strong>. The key insight is that the right design <em>object</em> — myopic, SPD, or RD — is not a tractability question. It is determined by what your deployment can credibly identify and what cost schedule it can credibly defend.
+    </p>
+    <ul>
+      <li><strong>Myopic</strong> is appropriate when drift is absent or the horizon is too short for drift to accumulate. Under the safe-harbor condition of signal-independent efficacy (Proposition 3.3), confidence-gated and accuracy-thresholded rules are nearly optimal.</li>
+      <li><strong>SPD</strong> is the oracle when the full constrained problem can be credibly specified: action logs, efficacy proxy, drift evidence, and a cardinal cost schedule B(x, ℓ) over all state–signal pairs.</li>
+      <li><strong>RD</strong> is the constructive object when the planner can anchor aggregate tolerance and relative upgrades but not a full cardinal schedule. It retains 97–99.7% of SPD's value under correct specification and can outperform plug-in SPD under cost misspecification or order-breaking proxy noise.</li>
+      <li><strong>Diagnostic-only</strong> applies when structural identification is impossible — you can still use the paper's screens (IDE decomposition, near-tie) as audit tools over whatever rule you run.</li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="foot-wrap">
+    <div><strong>AI Signal Design</strong> · Stefanos Poulidis, INSEAD</div>
+    <div><a href="research.html">Paper &amp; citation</a> · <a href="https://github.com/StefanosPoulidis/ai-signal-design">GitHub</a></div>
+  </div>
+</footer>
+
+<script src="assets/js/diagnose.js"></script>
+
+</body>
+</html>

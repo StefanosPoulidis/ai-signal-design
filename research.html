@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Research — AI Signal Design</title>
+<meta name="description" content="Paper details, abstract, citation, and links for 'Dynamic AI Signal Policy Design' by Stefanos Poulidis (INSEAD).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css">
+<style>
+  .paper-head {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    padding: 32px;
+    margin-bottom: 36px;
+  }
+  .paper-title {
+    font-family: "Crimson Pro", serif;
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1.2;
+    margin: 0 0 8px;
+  }
+  .paper-author {
+    font-size: 1rem;
+    color: var(--ink-soft);
+    margin-bottom: 4px;
+  }
+  .paper-aff {
+    font-size: 0.9rem;
+    color: var(--ink-mute);
+    font-style: italic;
+    margin-bottom: 22px;
+  }
+  .paper-meta {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    font-size: 0.86rem;
+    color: var(--ink-mute);
+  }
+  .abstract-box {
+    background: var(--paper-warm);
+    border-left: 3px solid var(--accent);
+    padding: 22px 26px;
+    border-radius: 2px;
+    font-size: 0.96rem;
+    line-height: 1.65;
+    margin-bottom: 28px;
+  }
+  .abstract-box p:last-child { margin-bottom: 0; }
+  .abstract-label {
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 10px;
+    font-family: "Inter", sans-serif;
+  }
+
+  .bibtex-box {
+    background: #1a1f2e;
+    color: #e3e6ed;
+    padding: 20px 24px;
+    border-radius: var(--radius);
+    font-family: "JetBrains Mono", "SF Mono", Menlo, monospace;
+    font-size: 0.84rem;
+    line-height: 1.55;
+    overflow-x: auto;
+    white-space: pre;
+    margin: 20px 0;
+  }
+  .copy-btn {
+    float: right;
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 4px 10px;
+    border-radius: 3px;
+    font-size: 0.78rem;
+    cursor: pointer;
+    font-family: inherit;
+    margin-bottom: 8px;
+  }
+  .copy-btn:hover { background: rgba(255,255,255,0.2); }
+
+  .results-summary { margin: 28px 0; }
+  .results-summary li {
+    margin-bottom: 10px;
+    line-height: 1.55;
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-wrap">
+    <a href="index.html" class="brand">AI Signal Design <small>Companion to Poulidis (INSEAD)</small></a>
+    <nav class="primary">
+      <a href="index.html">Home</a>
+      <a href="simulator.html">Simulator</a>
+      <a href="diagnose.html">Diagnose</a>
+      <a href="concepts.html">Concepts</a>
+      <a href="cases.html">Cases</a>
+      <a href="research.html" class="active">Research</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<section class="hero" style="padding-bottom: 0;">
+  <span class="eyebrow">The paper</span>
+  <h1 style="font-size:clamp(1.8rem,3vw,2.4rem);">For researchers and readers of the paper</h1>
+  <p class="lede">
+    This page is the anchor: full bibliographic detail, abstract, citation, and a direct link to the manuscript.
+  </p>
+</section>
+
+<section>
+
+<div class="paper-head">
+  <div class="paper-title">Dynamic AI Signal Policy Design</div>
+  <div class="paper-author">Stefanos Poulidis</div>
+  <div class="paper-aff">INSEAD, Decision Sciences — <a href="mailto:stefanos.poulidis@insead.edu">stefanos.poulidis@insead.edu</a></div>
+  <div class="paper-meta">
+    <span>Working paper, 2026</span>
+    <span>·</span>
+    <span>Formatted for <em>Management Science</em> submission</span>
+  </div>
+
+  <div class="cta-row">
+    <a href="assets/dynamic-ai-signal-policy-design.pdf" class="btn" target="_blank" rel="noopener">Read the PDF →</a>
+    <a href="#citation" class="btn secondary">Copy citation</a>
+  </div>
+</div>
+
+<div class="abstract-label">Abstract</div>
+<div class="abstract-box">
+  <p>
+    Human-in-the-loop AI systems often decide not only whether to signal a decision-maker, but how much assistance to provide over time. More frequent or more prescriptive signals — e.g., solutions rather than hints — can substantially improve current decisions but can also increase alert fatigue and reduce cognitive effort, eroding future performance and skill retention.
+  </p>
+  <p>
+    We study a constrained signal-policy design problem (SPD) in a finite-horizon Markov decision process in which a planner chooses signal intensity for a human operator. We show that reduced-form transition kernels are structurally insufficient for signal design because they do not identify whether downstream consequences arise from action-mediated displacement or from changes in future <em>efficacy</em> — the system's state-dependent capacity to improve subsequent decisions, conditional on the realized action. To recover these design-relevant components, we introduce a factored-kernel representation that separates behavioral response, physical transitions, and <em>efficacy drift</em>.
+  </p>
+  <p>
+    This structure yields a clear design logic for dynamic signal design: use direct SPD under full specification, and use a structured relative-design (RD) when the planner can evaluate marginal signal upgrades without fully specifying downstream costs across states; under RD, stronger signals are used when their incremental benefit justifies their downstream cost. We formalize this principle by exactly characterizing the optimal penalized ordered-menu policy through a single shadow price.
+  </p>
+  <p>
+    Computational studies in healthcare and engineering reveal a three-regime pattern: when efficacy drift is low, myopic rules based on immediate rewards are nearly optimal; when drift is material and the model is correctly specified, RD retains nearly all of SPD's value; under misspecification, RD can improve realized performance by regularizing the design problem. Our framework provides a disciplined basis for the design and governance of AI signal policies.
+  </p>
+</div>
+
+</section>
+
+<section>
+  <h2>Headline results</h2>
+  <ol class="results-summary prose">
+    <li><strong>Decision-insufficiency of reduced-form evidence</strong> (Prop. 3.1, Cor. 3.1). The same reduced-form continuation data can support opposite local signal rankings depending on how signal dependence is allocated between behavioral response and efficacy drift.</li>
+    <li><strong>IDE decomposition</strong> (Lemma 3.2). The value of a signal change splits into immediate, displacement, and efficacy channels. Any credible design must track all three.</li>
+    <li><strong>Ordered-menu threshold policy</strong> (Theorem 3.1). Once RD is the selected object, the optimal penalized policy admits an exact characterization through a single shadow price λ*.</li>
+    <li><strong>Safe harbor</strong> (Prop. 3.3). Under signal-independent efficacy, the drift channel is absent and myopic rules are optimal.</li>
+    <li><strong>Near-tie screen</strong> (Prop. 3.4). Continuation effects only overturn myopic rankings in the neighborhood of myopic ties.</li>
+    <li><strong>Full-horizon performance guarantee</strong> (Prop. 3.5). The one-step approximation comes with a bounded loss relative to the exact dynamic optimum.</li>
+    <li><strong>Three-regime deployment rule</strong> (§4). Low drift → myopic; material drift + full spec → SPD ≈ RD (97.9%–99.7% retention); material drift + misspecification → RD can outperform plug-in SPD by regularization.</li>
+  </ol>
+</section>
+
+<section id="citation">
+  <h2>Citation</h2>
+
+  <h3>BibTeX</h3>
+  <div class="bibtex-box"><button class="copy-btn" onclick="copyBibtex()">Copy</button>@unpublished{Poulidis2026SignalDesign,
+  author  = {Poulidis, Stefanos},
+  title   = {Dynamic {AI} Signal Policy Design},
+  note    = {Working paper, INSEAD},
+  year    = {2026}
+}</div>
+
+  <h3>Plain text</h3>
+  <div class="prose">
+    <p>
+      Poulidis, S. (2026). <em>Dynamic AI Signal Policy Design</em>. Working paper, INSEAD.
+    </p>
+  </div>
+</section>
+
+<section>
+  <h2>Acknowledgments and funding</h2>
+  <div class="prose">
+    <p>
+      This work has been supported by the Onassis Foundation, scholarship F ZS 051-1/2022-2023.
+    </p>
+    <p>
+      This companion website is an independent translation of the paper's findings for students and practitioners. It is not a substitute for the full manuscript; formal statements, proofs, and calibration details live there.
+    </p>
+  </div>
+</section>
+
+<section>
+  <h2>Related reading referenced in the paper</h2>
+  <div class="prose">
+    <ul>
+      <li>Li, C. and B. Piri (2025). Alert fatigue and clinical decision support. <em>Working paper.</em> — Hospital-pharmacy drift calibration.</li>
+      <li>Ancker, J. S. et al. (2017). Effects of workload, work complexity, and repeated alerts on alert fatigue. — Ambulatory CDS anchor.</li>
+      <li>Saxena, A. et al. (2008). Damage propagation modeling for aircraft engine run-to-failure simulation (C-MAPSS). — Turbofan benchmark.</li>
+      <li>Altman, E. (1999). <em>Constrained Markov Decision Processes.</em> — Occupancy-measure LP methodology.</li>
+      <li>Agarwal, R., M. Moehring &amp; A. Wolitzky (2025). Selective automation and information disclosure. — Related disclosure-design work.</li>
+      <li>Parasuraman, R. and D. Manzey (2010). Complacency and bias in human use of automation. — Efficacy-drift psychology.</li>
+    </ul>
+    <p class="small muted">Full bibliography: see <a href="assets/dynamic-ai-signal-policy-design.pdf" target="_blank" rel="noopener">the PDF</a>.</p>
+  </div>
+</section>
+
+<section>
+  <h2>About this site</h2>
+  <div class="prose">
+    <p>
+      This is a pedagogical companion to the paper, aimed at INSEAD MBA students and practitioners deploying human–AI decision-support systems. All interactive elements (the simulator, the diagnostic wizard) are intentionally small and transparent — the tabular MDP in the simulator is designed for intuition, not research claims.
+    </p>
+    <p>
+      Source code: <a href="https://github.com/StefanosPoulidis/ai-signal-design" target="_blank" rel="noopener">github.com/StefanosPoulidis/ai-signal-design</a>.
+    </p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="foot-wrap">
+    <div><strong>AI Signal Design</strong> · Stefanos Poulidis, INSEAD</div>
+    <div><a href="research.html">Paper &amp; citation</a> · <a href="https://github.com/StefanosPoulidis/ai-signal-design">GitHub</a></div>
+  </div>
+</footer>
+
+<script>
+function copyBibtex() {
+  const text = `@unpublished{Poulidis2026SignalDesign,
+  author  = {Poulidis, Stefanos},
+  title   = {Dynamic {AI} Signal Policy Design},
+  note    = {Working paper, INSEAD},
+  year    = {2026}
+}`;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    const orig = btn.textContent;
+    btn.textContent = "Copied";
+    setTimeout(() => { btn.textContent = orig; }, 1600);
+  });
+}
+</script>
+
+</body>
+</html>

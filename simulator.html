@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Simulator — AI Signal Design</title>
+<meta name="description" content="Interactive simulator comparing myopic, SPD, and RD signal policies under varying efficacy drift and cost misspecification.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css">
+<style>
+  /* Simulator-specific styles */
+  .policy-map { margin-bottom: 18px; }
+  .policy-map h5 {
+    font-family: "Inter", sans-serif;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-mute);
+    margin: 0 0 6px;
+    font-weight: 700;
+  }
+  .pmap-grid {
+    display: grid;
+    gap: 1px;
+    background: #e3e6ed;
+    padding: 1px;
+    border-radius: 3px;
+    font-size: 0.7rem;
+  }
+  .pmap-corner, .pmap-hdr, .pmap-rowhdr, .pmap-cell {
+    background: white;
+    text-align: center;
+    padding: 3px 1px;
+    min-height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink-mute);
+    font-variant-numeric: tabular-nums;
+  }
+  .pmap-rowhdr { background: var(--paper-warm); font-weight: 600; padding-right: 6px; padding-left: 6px; color: var(--ink); }
+  .pmap-hdr    { background: var(--paper-warm); font-size: 0.65rem; color: var(--ink-mute); }
+  .pmap-cell   { font-size: 0; }
+  .pmap-ell0 { background: #eef1f5; }                /* silent */
+  .pmap-ell1 { background: #c5d4e3; }                /* hint */
+  .pmap-ell2 { background: #8fa9c7; }                /* recommend */
+  .pmap-ell3 { background: #b5431f; }                /* solve */
+
+  .pmap-legend {
+    display: flex;
+    gap: 14px;
+    margin-top: 8px;
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+  }
+  .pmap-legend .pmap-sw {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    vertical-align: middle;
+    margin-right: 5px;
+    border-radius: 2px;
+  }
+
+  .diag-verdict {
+    padding: 16px 20px;
+    border-radius: var(--radius);
+    border-left: 4px solid var(--ink);
+    margin-top: 10px;
+    background: var(--card);
+  }
+  .diag-verdict.tone-safe { border-color: var(--good); background: var(--zone-safe); }
+  .diag-verdict.tone-mid  { border-color: var(--warn); background: var(--zone-mid); }
+  .diag-verdict.tone-hot  { border-color: var(--bad); background: var(--zone-hot); }
+  .diag-verdict strong { display: block; margin-bottom: 4px; font-size: 1.02rem; }
+  .diag-detail { font-size: 0.93rem; color: var(--ink-soft); }
+
+  .kpi .delta {
+    font-size: 0.78rem;
+    color: var(--ink-mute);
+    margin-top: 2px;
+    font-variant-numeric: tabular-nums;
+  }
+  .kpi.rd .delta  { color: var(--blue); }
+  .kpi.spd .delta { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-wrap">
+    <a href="index.html" class="brand">
+      AI Signal Design
+      <small>Companion to Poulidis (INSEAD)</small>
+    </a>
+    <nav class="primary">
+      <a href="index.html">Home</a>
+      <a href="simulator.html" class="active">Simulator</a>
+      <a href="diagnose.html">Diagnose</a>
+      <a href="concepts.html">Concepts</a>
+      <a href="cases.html">Cases</a>
+      <a href="research.html">Research</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<section class="hero" style="padding-bottom:0;">
+  <span class="eyebrow">Signal policy lab</span>
+  <h1 style="font-size:clamp(1.8rem,3vw,2.4rem);">Policy simulator</h1>
+  <p class="lede">
+    A small Markov decision process with four signal levels (silent → hint → recommend → solve) and five efficacy classes. Compare three policies side-by-side: a <strong style="color:var(--ink-mute);">myopic</strong> rule that picks the best signal now, an <strong style="color:var(--accent-dark);">SPD</strong> policy that uses the planner's full cost model, and an <strong style="color:var(--blue);">RD</strong> policy that only knows relative intensity cost. All three are evaluated under true dynamics and the same budget.
+  </p>
+</section>
+
+<section class="sim-layout">
+
+  <aside class="sim-controls">
+    <h3>Scenario</h3>
+    <div class="control">
+      <select id="ctrl-scenario">
+        <option value="custom">Custom</option>
+        <option value="lowdrift">Hospital (low drift)</option>
+        <option value="midrift">Ambulatory CDS (boundary)</option>
+        <option value="cmapss">C-MAPSS (high drift)</option>
+        <option value="misspec">Misspecified cost</option>
+      </select>
+    </div>
+
+    <h3 style="margin-top:24px;">Parameters</h3>
+    <div class="control">
+      <label>Efficacy drift β<sub>d</sub> <span class="val" id="val-beta">0.20</span></label>
+      <input type="range" id="ctrl-beta" min="0" max="0.7" step="0.01" value="0.20">
+      <div class="small muted" style="margin-top:4px;">How strongly signaling pushes efficacy down.</div>
+    </div>
+    <div class="control">
+      <label>Cost budget B̄ <span class="val" id="val-budget">14</span></label>
+      <input type="range" id="ctrl-budget" min="4" max="30" step="0.5" value="14">
+      <div class="small muted" style="margin-top:4px;">Horizon-wide cap on cumulative signaling cost.</div>
+    </div>
+    <div class="control">
+      <label>SPD cost misspec. <span class="val" id="val-misspec">0%</span></label>
+      <input type="range" id="ctrl-misspec" min="-0.8" max="0.8" step="0.01" value="0">
+      <div class="small muted" style="margin-top:4px;">How wrong the SPD planner's belief about state-dependent cost is. RD uses only intensity.</div>
+    </div>
+
+    <h3 style="margin-top:24px;">Model constants</h3>
+    <div class="small muted">
+      Horizon T = 20 · Efficacy classes C = 5 · Signal menu |L| = 4 · Initial efficacy c<sub>0</sub> = 2 (mid).
+    </div>
+  </aside>
+
+  <div class="sim-output">
+
+    <div class="kpis">
+      <div class="kpi myopic">
+        <div class="label">Policy A</div>
+        <div class="name">Myopic</div>
+        <div class="big" id="kpi-my-val">—</div>
+        <div class="delta" id="kpi-my-gain">baseline</div>
+      </div>
+      <div class="kpi rd">
+        <div class="label">Policy B</div>
+        <div class="name">Relative Design (RD)</div>
+        <div class="big" id="kpi-rd-val">—</div>
+        <div class="delta" id="kpi-rd-gain">—</div>
+      </div>
+      <div class="kpi spd">
+        <div class="label">Policy C</div>
+        <div class="name">Signal-Policy Design (SPD)</div>
+        <div class="big" id="kpi-spd-val">—</div>
+        <div class="delta" id="kpi-spd-gain">—</div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h4>Verdict</h4>
+      <div id="diag-verdict" class="diag-verdict">—</div>
+      <div class="small muted" style="margin-top:10px;">
+        RD retains <strong id="retention-val">—</strong> of SPD's gain over myopic.
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h4>Cumulative reward over time</h4>
+      <div class="chart-sub">Higher is better. Evaluated under true dynamics.</div>
+      <div class="chart-wrap"><canvas id="chart-reward"></canvas></div>
+      <div class="legend">
+        <span><span class="sw" style="background:#6b7689;"></span>Myopic</span>
+        <span><span class="sw" style="background:#1f477a;"></span>RD</span>
+        <span><span class="sw" style="background:#b5431f;"></span>SPD</span>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h4>Cumulative cost over time</h4>
+      <div class="chart-sub">All three policies are budget-tuned via the dual multiplier λ.</div>
+      <div class="chart-wrap"><canvas id="chart-cost"></canvas></div>
+      <div class="legend">
+        <span><span class="sw" style="background:#6b7689;"></span>Myopic</span>
+        <span><span class="sw" style="background:#1f477a;"></span>RD</span>
+        <span><span class="sw" style="background:#b5431f;"></span>SPD</span>
+        <span><span class="sw" style="background:#a3301e;"></span>Budget (B̄)</span>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h4>Expected efficacy over time</h4>
+      <div class="chart-sub">How fast each policy depletes the system's future capacity to improve decisions.</div>
+      <div class="chart-wrap"><canvas id="chart-efficacy"></canvas></div>
+    </div>
+
+    <div class="chart-card">
+      <h4>Signal policy maps</h4>
+      <div class="chart-sub">State (efficacy, rows) × time (epochs, columns) → signal level. Compare how each rule allocates signaling across states and stages.</div>
+      <div id="policy-heatmaps" style="margin-top:14px;"></div>
+      <div class="pmap-legend">
+        <span><span class="pmap-sw" style="background:#eef1f5;"></span>Silent</span>
+        <span><span class="pmap-sw" style="background:#c5d4e3;"></span>Hint</span>
+        <span><span class="pmap-sw" style="background:#8fa9c7;"></span>Recommend</span>
+        <span><span class="pmap-sw" style="background:#b5431f;"></span>Solve</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <h2>How to read this</h2>
+  <div class="prose">
+    <p>
+      <strong>Low drift (β<sub>d</sub> &lt; 0.1).</strong> The three curves overlap. Myopic signaling already captures nearly all of the value, and dynamic design adds little. A simple per-step rule is enough.
+    </p>
+    <p>
+      <strong>Material drift (β<sub>d</sub> ≈ 0.25 – 0.6).</strong> Myopic drifts below SPD and RD: greedy signaling depletes efficacy early and the system collects fewer late-horizon rewards. SPD and RD nearly coincide — confirming the paper's finding that RD retains 97–99.7% of SPD's value.
+    </p>
+    <p>
+      <strong>Add cost misspecification.</strong> Push the misspec slider above +30%. SPD now over-estimates state-dependent cost and becomes overcautious; it drops below RD. RD is invariant to this misspecification because it uses only intensity-ordered cost — the <em>regularization</em> story from Section 4.
+    </p>
+    <div class="callout">
+      <strong>Caveat.</strong> This is a pedagogical simulator — a small 5×20 tabular MDP with transparent primitives. Gains are directional but compressed compared to the paper's calibrated benchmarks, where high-drift C-MAPSS reaches 15–23% gains. The richer hospital pharmacy, ambulatory CDS, and C-MAPSS turbofan numbers are reported on the <a href="cases.html">case studies</a> page.
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="foot-wrap">
+    <div><strong>AI Signal Design</strong> · Stefanos Poulidis, INSEAD</div>
+    <div><a href="research.html">Paper &amp; citation</a> · <a href="https://github.com/StefanosPoulidis/ai-signal-design">GitHub</a></div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="assets/js/simulator.js"></script>
+
+</body>
+</html>

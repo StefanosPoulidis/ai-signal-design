@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Case studies — AI Signal Design</title>
+<meta name="description" content="Hospital alert fatigue, ambulatory clinical decision support, chess tutoring, and C-MAPSS turbofan predictive maintenance — with the paper's benchmark numbers.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css">
+<style>
+  .case-section { margin-bottom: 64px; }
+  .case-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 20px;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 10px;
+    margin-bottom: 14px;
+  }
+  .case-head h2 { margin: 0; }
+  .case-tag {
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 3px;
+    color: white;
+    white-space: nowrap;
+  }
+  .case-tag.low { background: var(--good); }
+  .case-tag.mid { background: var(--warn); }
+  .case-tag.high { background: var(--bad); }
+  .case-tag.engineering { background: var(--blue); }
+
+  .num-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .num-cell {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+  }
+  .num-cell .label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-mute); font-weight: 600; }
+  .num-cell .big {
+    font-family: "Crimson Pro", serif;
+    font-size: 1.8rem;
+    color: var(--accent-dark);
+    line-height: 1.1;
+    margin-top: 4px;
+    font-weight: 600;
+  }
+  .num-cell.blue .big { color: var(--blue); }
+  .num-cell.good .big { color: var(--good); }
+  .num-cell .unit { font-size: 0.85rem; color: var(--ink-mute); margin-left: 4px; }
+  .num-cell .desc { font-size: 0.82rem; color: var(--ink-soft); margin-top: 4px; }
+
+  .source-note {
+    font-size: 0.84rem;
+    color: var(--ink-mute);
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--rule);
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-wrap">
+    <a href="index.html" class="brand">AI Signal Design <small>Companion to Poulidis (INSEAD)</small></a>
+    <nav class="primary">
+      <a href="index.html">Home</a>
+      <a href="simulator.html">Simulator</a>
+      <a href="diagnose.html">Diagnose</a>
+      <a href="concepts.html">Concepts</a>
+      <a href="cases.html" class="active">Cases</a>
+      <a href="research.html">Research</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<section class="hero" style="padding-bottom:0;">
+  <span class="eyebrow">Case studies</span>
+  <h1 style="font-size:clamp(1.8rem,3vw,2.4rem);">Four settings, three regimes</h1>
+  <p class="lede">
+    Each case is a distinct deployment class: hospital alert fatigue, ambulatory clinical decision support, chess tutoring, and C-MAPSS turbofan predictive maintenance. The numbers below are taken directly from the paper's benchmark tables and are anchored in published evidence or structurally specified environments.
+  </p>
+</section>
+
+<!-- Hospital alert fatigue -->
+<section class="case-section" id="hospital">
+  <div class="case-head">
+    <h2>Hospital pharmacy alert fatigue</h2>
+    <span class="case-tag low">Low drift</span>
+  </div>
+  <div class="prose">
+    <p>
+      The hospital pharmacy benchmark is anchored in the fatigue estimate of <em>Li &amp; Piri (2025)</em>. Each clinical decision is accompanied by an optional medication-safety alert; the operator is a pharmacist or prescribing physician. The efficacy state tracks accumulated alert-fatigue.
+    </p>
+    <p>
+      With the published fatigue coefficient β<sub>d</sub> = 0.003394 (corresponding to β<sub>d</sub> = 0.05 on the paper's unified grid), dynamic signal design offers only a small improvement over a well-shaped myopic rule.
+    </p>
+  </div>
+
+  <div class="num-grid">
+    <div class="num-cell"><div class="label">SPD gain over myopic</div><div class="big">1.95<span class="unit">%</span></div><div class="desc">Full oracle with state-dependent cost schedule.</div></div>
+    <div class="num-cell blue"><div class="label">RD gain over myopic</div><div class="big">1.91<span class="unit">%</span></div><div class="desc">Structured relative-design via shadow price.</div></div>
+    <div class="num-cell good"><div class="label">RD retention of SPD</div><div class="big">97.9<span class="unit">%</span></div><div class="desc">Value retained despite lighter specification burden.</div></div>
+    <div class="num-cell"><div class="label">Policy disagreement</div><div class="big">14.0<span class="unit">%</span></div><div class="desc">Fraction of state-stage cells where SPD and RD route differently.</div></div>
+  </div>
+
+  <div class="prose">
+    <p>
+      <strong>Takeaway.</strong> In this low-drift regime, the paper's null-model placebo reduces the RD gain below 0.3% — consistent with the safe-harbor logic of Proposition 3.3. A confidence-gated or accuracy-thresholded myopic rule is operationally adequate; the dynamic apparatus is only worth the investment if the deployment moves into a higher-drift regime.
+    </p>
+    <p class="source-note">Source: paper §4.1 (Li-Piri calibration), Table 4 (SPD vs RD), numbers from <code>spd_vs_rd_results.json</code>.</p>
+  </div>
+</section>
+
+<!-- Ambulatory CDS -->
+<section class="case-section" id="ambulatory">
+  <div class="case-head">
+    <h2>Ambulatory clinical decision support</h2>
+    <span class="case-tag mid">Boundary drift</span>
+  </div>
+  <div class="prose">
+    <p>
+      The ambulatory CDS benchmark uses the encounter-level overload estimate of <em>Ancker et al. (2017)</em> to anchor a higher-drift calibration. Because the evidence pins down the average drift magnitude but not the low-efficacy responsiveness parameter, the paper sweeps this parameter across a band.
+    </p>
+    <p>
+      Across the band, RD gains over myopic range from 4.4% (high responsiveness) to 18.1% (low responsiveness). The SPD–RD wedge stays under 0.1 reward units everywhere.
+    </p>
+  </div>
+
+  <h3 style="font-family: 'Inter', sans-serif; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-mute); font-weight: 700;">High-responsiveness (mildest drift)</h3>
+  <div class="num-grid">
+    <div class="num-cell"><div class="label">SPD gain</div><div class="big">4.49<span class="unit">%</span></div></div>
+    <div class="num-cell blue"><div class="label">RD gain</div><div class="big">4.42<span class="unit">%</span></div></div>
+    <div class="num-cell good"><div class="label">RD retention</div><div class="big">98.6<span class="unit">%</span></div></div>
+  </div>
+
+  <h3 style="font-family: 'Inter', sans-serif; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-mute); font-weight: 700;">Mid-responsiveness</h3>
+  <div class="num-grid">
+    <div class="num-cell"><div class="label">SPD gain</div><div class="big">10.89<span class="unit">%</span></div></div>
+    <div class="num-cell blue"><div class="label">RD gain</div><div class="big">10.86<span class="unit">%</span></div></div>
+    <div class="num-cell good"><div class="label">RD retention</div><div class="big">99.7<span class="unit">%</span></div></div>
+  </div>
+
+  <h3 style="font-family: 'Inter', sans-serif; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-mute); font-weight: 700;">Low-responsiveness (severe fatigue)</h3>
+  <div class="num-grid">
+    <div class="num-cell"><div class="label">SPD gain</div><div class="big">18.19<span class="unit">%</span></div></div>
+    <div class="num-cell blue"><div class="label">RD gain</div><div class="big">18.13<span class="unit">%</span></div></div>
+    <div class="num-cell good"><div class="label">RD retention</div><div class="big">99.6<span class="unit">%</span></div></div>
+  </div>
+
+  <div class="prose">
+    <div class="callout">
+      <strong>What changes across the band.</strong> The drift rate is fixed; only the low-efficacy responsiveness varies. As the environment moves from high to low responsiveness, cumulative decision quality becomes more sensitive to protecting efficacy — and the value of dynamic signal design grows from modest to substantial.
+    </div>
+    <p class="source-note">Source: paper §4.2 (Ancker calibration), Table 4; unified-grid β<sub>d</sub> = 0.10, 0.25, 0.50.</p>
+  </div>
+</section>
+
+<!-- C-MAPSS turbofan -->
+<section class="case-section" id="cmapss">
+  <div class="case-head">
+    <h2>C-MAPSS turbofan predictive maintenance</h2>
+    <span class="case-tag engineering">Engineering · structurally specified</span>
+  </div>
+  <div class="prose">
+    <p>
+      C-MAPSS is NASA's Commercial Modular Aero-Propulsion System Simulation — a widely-used benchmark for turbofan degradation and remaining-useful-life prediction (<em>Saxena et al. 2008</em>). The paper uses it as a structurally specified environment where drift intensity is known and varied directly, isolating the efficacy-drift channel from broader deployment frictions.
+    </p>
+    <p>
+      The signal levels correspond to maintenance recommendations of increasing prescriptiveness: no action, inspection, corrective intervention, overhaul. The efficacy state reflects accumulated component wear and operating-regime coverage.
+    </p>
+  </div>
+
+  <h3 style="font-family: 'Inter', sans-serif; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-mute); font-weight: 700;">Low drift (β<sub>d</sub> = 0.10)</h3>
+  <div class="num-grid">
+    <div class="num-cell"><div class="label">SPD gain</div><div class="big">4.49<span class="unit">%</span></div></div>
+    <div class="num-cell blue"><div class="label">RD gain</div><div class="big">4.42<span class="unit">%</span></div></div>
+    <div class="num-cell good"><div class="label">RD retention</div><div class="big">98.6<span class="unit">%</span></div></div>
+  </div>
+
+  <h3 style="font-family: 'Inter', sans-serif; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-mute); font-weight: 700;">Boundary drift (β<sub>d</sub> = 0.40)</h3>
+  <div class="num-grid">
+    <div class="num-cell"><div class="label">SPD gain</div><div class="big">15.68<span class="unit">%</span></div></div>
+    <div class="num-cell blue"><div class="label">RD gain</div><div class="big">15.63<span class="unit">%</span></div></div>
+    <div class="num-cell good"><div class="label">RD retention</div><div class="big">99.7<span class="unit">%</span></div></div>
+  </div>
+
+  <h3 style="font-family: 'Inter', sans-serif; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-mute); font-weight: 700;">High drift (β<sub>d</sub> = 0.80)</h3>
+  <div class="num-grid">
+    <div class="num-cell"><div class="label">SPD gain</div><div class="big">23.43<span class="unit">%</span></div></div>
+    <div class="num-cell blue"><div class="label">RD gain</div><div class="big">23.27<span class="unit">%</span></div></div>
+    <div class="num-cell good"><div class="label">RD retention</div><div class="big">99.3<span class="unit">%</span></div></div>
+  </div>
+
+  <div class="prose">
+    <div class="callout blue">
+      <strong>What this benchmark shows.</strong> With fully specified dynamics, the efficacy-drift channel is isolated cleanly. As drift rises, myopic signal allocation becomes materially suboptimal — not because the model is wrong, but because the dynamic channel dominates. Yet RD retains over 99% of SPD's value at every drift level, even when the two policies disagree on up to 12.8% of state-stage cells. The daylight is in policy shape, not policy value.
+    </div>
+    <p class="source-note">Source: paper §4.2, Appendix D; <code>spd_vs_rd_results.json</code> entries <code>cmapss_low</code>, <code>cmapss_boundary</code>, <code>cmapss_high</code>.</p>
+  </div>
+</section>
+
+<!-- Chess tutoring -->
+<section class="case-section" id="chess">
+  <div class="case-head">
+    <h2>Chess tutoring and skill retention</h2>
+    <span class="case-tag mid">Human–AI pedagogy</span>
+  </div>
+  <div class="prose">
+    <p>
+      A chess tutor offers variable-intensity assistance at each puzzle or position: nothing, a gentle hint, a candidate-move list, or the full solution. Stronger assistance improves the immediate outcome of the puzzle but may erode long-run skill — the efficacy state is the trainee's accumulated positional understanding.
+    </p>
+    <p>
+      The paper validates this setting with a real-data benchmark drawn from online puzzle archives. Familiarity proxies — whether a position's opening has been seen before — serve as the planner-side efficacy signal. The expanded and deep-familiarity runs confirm the ordered-menu threshold structure and the value of dynamic design across sample sizes.
+    </p>
+  </div>
+
+  <div class="num-grid">
+    <div class="num-cell"><div class="label">Data regime</div><div class="big">Real</div><div class="desc">Archive of Lichess puzzles; familiarity proxy from opening history.</div></div>
+    <div class="num-cell blue"><div class="label">Design object</div><div class="big">RD</div><div class="desc">Ordered proxy + relative upgrade judgments are credible; full cost schedule is not.</div></div>
+    <div class="num-cell"><div class="label">Key finding</div><div class="big">Ordered menu</div><div class="desc">Threshold structure of Theorem 3.1 holds empirically.</div></div>
+  </div>
+
+  <div class="prose">
+    <p class="source-note">Source: paper §4 (chess sub-benchmarks) and supplementary scripts <code>chess_realdata_benchmark.py</code>, <code>chess_familiarity_proxy_validation.py</code>. Figures in <code>figures/chess_realdata_benchmark_panels*.pdf</code>.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Reading across the cases</h2>
+  <div class="prose">
+    <p>
+      Each case is a data point on the paper's unified β<sub>d</sub>-grid. Placed side-by-side, they trace out a single monotone relationship: as efficacy drift rises, the gain from dynamic signal design rises from under 2% (hospital) through 4–10% (ambulatory high/mid) to over 20% (C-MAPSS high). RD tracks SPD within tenths of a percent throughout.
+    </p>
+    <p>
+      The practical implication: you don't need to commit to one design object across all deployments. You diagnose the drift regime and the specification regime of <em>your</em> setting, and the selection rule tells you which object to adopt.
+    </p>
+  </div>
+
+  <div class="cta-row">
+    <a href="diagnose.html" class="btn">Diagnose my setting →</a>
+    <a href="simulator.html" class="btn secondary">Try the simulator</a>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="foot-wrap">
+    <div><strong>AI Signal Design</strong> · Stefanos Poulidis, INSEAD</div>
+    <div><a href="research.html">Paper &amp; citation</a> · <a href="https://github.com/StefanosPoulidis/ai-signal-design">GitHub</a></div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Signal Design — When and how much should AI help humans?</title>
+<meta name="description" content="A practical companion to 'Dynamic AI Signal Policy Design' (Poulidis, INSEAD). Learn when AI signals help, when they hurt, and which design object fits your setting.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-wrap">
+    <a href="index.html" class="brand">
+      AI Signal Design
+      <small>Companion to Poulidis (INSEAD)</small>
+    </a>
+    <nav class="primary">
+      <a href="index.html" class="active">Home</a>
+      <a href="simulator.html">Simulator</a>
+      <a href="diagnose.html">Diagnose</a>
+      <a href="concepts.html">Concepts</a>
+      <a href="cases.html">Cases</a>
+      <a href="research.html">Research</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<section class="hero">
+  <span class="eyebrow">A management playbook for AI assistance</span>
+  <h1>When should AI help humans — and how much?</h1>
+  <p class="lede">
+    Every human-in-the-loop AI system must answer two questions at every moment: should the system signal, and how prescriptively? A hint preserves learning; a full solution replaces effort. More signals can improve today's decision while eroding tomorrow's. This site translates the findings of <em>Dynamic AI Signal Policy Design</em> into a practical framework for students and managers.
+  </p>
+  <div class="cta-row">
+    <a href="simulator.html" class="btn">Try the simulator &rarr;</a>
+    <a href="diagnose.html" class="btn secondary">Diagnose my setting</a>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section>
+  <h2>The central tension</h2>
+  <p class="prose">
+    AI assistance is rarely free. More frequent or more prescriptive signals can substantially improve the current decision but can also increase alert fatigue, reduce cognitive effort, and erode skill retention. Once assistance shapes future capacity, signal design becomes a <em>dynamic</em> problem — and the usual tools mislead.
+  </p>
+
+  <div class="cards">
+    <div class="card">
+      <span class="num">1</span>
+      <h3>Immediate gain</h3>
+      <p>A stronger signal can flip a current decision from wrong to right — higher accuracy, faster resolution, fewer local errors.</p>
+    </div>
+    <div class="card">
+      <span class="num">2</span>
+      <h3>Efficacy drift</h3>
+      <p>Repeated assistance can silently change the system's future capacity to improve decisions: fatigued clinicians ignore alerts, trainees stop practicing, operators lose vigilance.</p>
+    </div>
+    <div class="card">
+      <span class="num">3</span>
+      <h3>The design problem</h3>
+      <p>Choose signal intensity over a horizon to maximize cumulative decision quality <em>subject to</em> a cap on cumulative downstream cost. This is the <strong>Signal-Policy Design</strong> (SPD) problem.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>The three-regime rule</h2>
+  <p class="prose">
+    The paper shows that the right design depends on two things: how materially signaling shifts future efficacy (<em>drift</em>), and how credibly you can specify its downstream cost. That yields three operational regimes.
+  </p>
+
+  <div class="regimes">
+    <div class="regime safe">
+      <h3>Low drift</h3>
+      <p class="verdict">Myopic is enough</p>
+      <p>When signals barely shift future efficacy, just pick the best signal for the current decision. The benchmarked gain from dynamic design is under 2%.</p>
+    </div>
+    <div class="regime mid">
+      <h3>Material drift, full spec</h3>
+      <p class="verdict">SPD or RD</p>
+      <p>When drift matters and you can credibly specify a full cost schedule, direct SPD is the oracle. Relative Design (RD) retains 97–99.7% of its value with far less fragile inputs.</p>
+    </div>
+    <div class="regime hot">
+      <h3>Material drift, partial spec</h3>
+      <p class="verdict">RD is the object</p>
+      <p>Under burden-misspecification or order-breaking proxy noise, plug-in SPD can go wrong. RD <em>regularizes</em> the design problem — it's not a fallback, it's the right object.</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>What this replaces.</strong> Confidence-gating, accuracy thresholds, and "show alert when p&nbsp;&gt;&nbsp;0.8" rules are all flavors of the myopic benchmark. They're fine in low-drift settings. In high-drift settings they systematically overuse assistance and erode the very capacity that makes the system work.
+  </div>
+</section>
+
+<section>
+  <h2>What's on this site</h2>
+
+  <div class="cards">
+    <div class="card">
+      <h3><a href="simulator.html" style="text-decoration:none;">Interactive simulator &rarr;</a></h3>
+      <p>Set drift intensity and cost budget; watch the myopic, RD, and SPD policies unfold side-by-side. See how gains grow with drift and how each policy manages the budget.</p>
+    </div>
+    <div class="card">
+      <h3><a href="diagnose.html" style="text-decoration:none;">Diagnostic wizard &rarr;</a></h3>
+      <p>Answer five questions about your deployment — action logs, efficacy proxy, drift evidence, cost specification, horizon — and get a verdict: myopic, RD, SPD, or diagnostic-only.</p>
+    </div>
+    <div class="card">
+      <h3><a href="concepts.html" style="text-decoration:none;">Core concepts &rarr;</a></h3>
+      <p>Efficacy, the factored kernel (μ, F, K), and the IDE decomposition of signal value — explained with intuition, not formalism.</p>
+    </div>
+    <div class="card">
+      <h3><a href="cases.html" style="text-decoration:none;">Case studies &rarr;</a></h3>
+      <p>Hospital alert fatigue, ambulatory clinical decision support, chess tutoring, and turbofan predictive maintenance. Numbers drawn from the paper's benchmarks.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Who this is for</h2>
+  <div class="prose">
+    <p>
+      <strong>Students</strong> meeting human–AI decision problems for the first time will find a clean map from the economic problem to the right design object — without wading through the proofs.
+    </p>
+    <p>
+      <strong>Managers</strong> deploying AI assistance at scale — clinical decision support, predictive maintenance, triage, intelligent tutoring — will find a screener that tells them which inputs they actually need to govern their AI signaling policy responsibly.
+    </p>
+    <p>
+      <strong>Researchers</strong> can go straight to the <a href="research.html">research page</a> for the paper, abstract, and citation.
+    </p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="foot-wrap">
+    <div>
+      <strong>AI Signal Design</strong> — companion to <em>Dynamic AI Signal Policy Design</em><br>
+      Stefanos Poulidis, INSEAD (Decision Sciences).
+    </div>
+    <div>
+      <a href="research.html">Paper &amp; citation</a>
+      &nbsp;·&nbsp;
+      <a href="https://github.com/StefanosPoulidis/ai-signal-design">Source on GitHub</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
